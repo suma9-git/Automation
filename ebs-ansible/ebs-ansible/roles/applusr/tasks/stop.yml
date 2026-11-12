@@ -1,0 +1,52 @@
+# -------------------------------
+# Stop EBS services (all app nodes)
+# -------------------------------
+- name: Stop EBS services
+  shell: |
+    . {{ env_file }}
+    {{ app_stop_script }}
+  register: app_out
+  when: target_env + '_app_web_appl' in group_names
+
+- debug:
+    var: app_out.stdout
+
+# -------------------------------
+# Stop Admin Server (admin node only)
+# -------------------------------
+#- name: Get WebLogic password
+#  shell: pwfl {{ env_name }} weblogic_ebus app
+#  register: wlspass
+#  no_log: false 
+#  when: "'app_admin' in group_names"
+  # when: target_env + '_app_admin' in group_names
+
+#- name: Get APPS password
+#  shell: pwfl {{ env_name }} apps db
+#  register: appspass
+#  no_log: true
+#  when: "'app_admin' in group_names"
+  #when: target_env + '_app_admin' in group_names
+
+#- name: Stop Admin Server
+#  ansible.builtin.shell: "{{ admin_stop_script }} {{ applmgr_env_file }}"
+#  args:
+#    stdin: "{{ (wlspass.stdout | trim) ~ '\n' ~ (appspass.stdout | trim) ~ '\n' }}"
+#  no_log: false
+#  when: target_env + '_app_admin' in group_names
+
+
+- name: Stop Admin Server
+  ansible.builtin.shell: |
+    set -euo pipefail
+    /bin/sh -c "{{ admin_stop_script }} {{ applmgr_env_file }}" < /dev/null
+  args:
+    executable: /bin/bash
+  register: admin_stop_out
+  no_log: false
+  when: target_env + '_app_admin' in group_names
+
+- name: Show stop output
+  ansible.builtin.debug:
+    var: admin_stop_out.stdout_lines
+  when: target_env + '_app_admin' in group_names

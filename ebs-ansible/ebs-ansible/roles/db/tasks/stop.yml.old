@@ -1,0 +1,6 @@
+- name: Stop Database
+  shell: "{{ db_stop_script }} {{ env_name }}"
+  register: db_out
+
+- debug:
+    var: db_out.stdout

@@ -1,0 +1,8 @@
+- name: Start WebLogic services
+  shell: |
+    . ~/.bash_profile
+    {{ weblogic_start_script }}
+  register: wls_out
+
+- debug:
+    var: wls_out.stdout

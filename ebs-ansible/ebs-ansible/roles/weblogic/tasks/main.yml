@@ -1,0 +1,5 @@
+- import_tasks: stop.yml
+  when: action == 'stop'
+
+- import_tasks: start.yml
+  when: action == 'start'

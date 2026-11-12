@@ -1,0 +1,8 @@
+env_name: UAT
+
+is_rac: true
+applusr_env_file: /u01/app/applusr/DBA_TOOL/env/UAT.env 
+webusr_env_file: /u01/app/webusr/DBA_TOOL/env/UAT14C.env
+db_env_file: /u01/app/oracle/DBA_TOOL/env/CUAT.env
+rac_nodes: "dbuat1,dbuat2"
+

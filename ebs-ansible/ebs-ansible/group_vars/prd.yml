@@ -1,0 +1,8 @@
+env_name: PRD
+
+is_rac: true
+applusr_env_file: /u01/app/applusr/DBA_TOOL/env/PRD.env 
+webusr_env_file: /u01/app/webusr/DBA_TOOL/env/PRD14C.env
+db_env_file: /u01/app/oracle/DBA_TOOL/env/CPRD.env
+rac_nodes: "dbprd1,dbprd2"
+

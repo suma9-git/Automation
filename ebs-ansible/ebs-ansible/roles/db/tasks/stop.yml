@@ -1,0 +1,21 @@
+- name: Skip RAC nodes not selected
+  ansible.builtin.meta: end_host
+  when:
+    - is_rac | bool
+    - rac_nodes is defined
+    - inventory_hostname not in (rac_nodes | split(','))
+
+- name: Stop Database (SQLPlus script)
+  ansible.builtin.shell: "{{ db_stop_script }} {{ env_name }}"
+  register: db_out
+
+- ansible.builtin.debug:
+    var: db_out.stdout
+
+- name: Stop CRS (RAC only)
+  ansible.builtin.shell: "{{ rac_stop_cmd }}"
+  when: is_rac | bool
+
+- name: Stop HAS (RAC only)
+  ansible.builtin.shell: "{{ has_stop_cmd }}"
+  when: is_rac | bool

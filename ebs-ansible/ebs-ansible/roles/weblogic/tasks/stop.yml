@@ -1,0 +1,9 @@
+- name: Stop WebLogic services
+  shell: |
+    . ~/.bash_profile
+    {{ weblogic_stop_script }}
+  register: wls_out
+  when: target_env + '_app_web_wls' in group_names
+
+- debug:
+    var: wls_out.stdout

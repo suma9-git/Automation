@@ -1,0 +1,6 @@
+env_name: DEV
+
+applusr_env_file: /u01/app/applusr/DBA_TOOL/env/DEV.env 
+webusr_env_file: /u01/app/webusr/DBA_TOOL/env/DEV14C.env
+db_env_file: /u01/app/oracle/DBA_TOOL/env/CDEV.env
+

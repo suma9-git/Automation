@@ -1,0 +1,37 @@
+- name: Skip RAC nodes not selected
+  ansible.builtin.meta: end_host
+  when:
+    - is_rac | bool
+    - rac_nodes is defined
+    - inventory_hostname not in (rac_nodes | split(','))
+
+- name: Start HAS (RAC only)
+  ansible.builtin.shell: "{{ has_start_cmd }}"
+  when: is_rac | bool
+
+- name: Wait for HAS to be online (RAC only)
+  ansible.builtin.shell: "sudo /u02/app/19c/grid/bin/crsctl check has"
+  register: has_check
+  retries: 20
+  delay: 15
+  until: has_check.rc == 0
+  when: is_rac | bool
+
+- name: Start CRS (RAC only)
+  ansible.builtin.shell: "{{ rac_start_cmd }}"
+  when: is_rac | bool
+
+- name: Wait for CRS to be online (RAC only)
+  ansible.builtin.shell: "sudo /u02/app/19c/grid/bin/crsctl check crs"
+  register: crs_check
+  retries: 20
+  delay: 15
+  until: crs_check.rc == 0
+  when: is_rac | bool
+
+- name: Start Database (SQLPlus script)
+  ansible.builtin.shell: "{{ db_start_script }} {{ env_name }}"
+  register: db_out
+
+- ansible.builtin.debug:
+    var: db_out.stdout

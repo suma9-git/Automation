@@ -1,0 +1,6 @@
+- name: Start Database
+  shell: "{{ db_start_script }} {{ env_name }}"
+  register: db_out
+
+- debug:
+    var: db_out.stdout

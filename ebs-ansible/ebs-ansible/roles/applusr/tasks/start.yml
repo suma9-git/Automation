@@ -1,0 +1,54 @@
+# -------------------------------
+# Start Admin Server (admin node only)
+# -------------------------------
+#- name: Get WebLogic password
+#  shell: pwfl {{ env_name }} weblogic_ebus app
+#  register: wlspass
+#  no_log: true
+#  when: "'app_admin' in group_names"
+
+#- name: Get APPS password
+#  shell: pwfl {{ env_name }} apps db
+#  register: appspass
+#  no_log: true
+#  when: "'app_admin' in group_names"
+
+#- name: Start Admin Server
+  #shell: "{{ admin_start_script }} {{ applmgr_env_file }}" 
+  #  . {{ env_file }}
+  #  {{ admin_start_script }} start -nopromptmsg
+  #args:
+  #  stdin: |
+  #    {{ wlspass.stdout | trim }}
+  #    {{ appspass.stdout | trim }}
+  #no_log: true
+ # when: "'app_admin' in group_names"
+  #when: target_env + '_app_admin' in group_names
+
+- name: Start Admin Server
+  ansible.builtin.shell: |
+    set -euo pipefail
+    /bin/sh -c "{{ admin_start_script }} {{ applmgr_env_file }}" < /dev/null
+  args:
+    executable: /bin/bash
+  register: admin_start_out
+  no_log: false
+  when: target_env + '_app_admin' in group_names
+
+- name: Show start output
+  ansible.builtin.debug:
+    var: admin_start_out.stdout_lines
+  when: target_env + '_app_admin' in group_names
+
+# -------------------------------
+# Start EBS services (all app nodes)
+# -------------------------------
+- name: Start EBS services
+  shell: |
+    . {{ env_file }}
+    {{ app_start_script }}
+  register: app_out
+  when: target_env + '_app_web_appl' in group_names
+
+- debug:
+    var: app_out.stdout

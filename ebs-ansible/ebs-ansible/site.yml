@@ -1,0 +1,44 @@
+# =========================================
+# STOP WEBLOGIC (as webusr user)
+# =========================================
+- name: Stop WebLogic
+  hosts: "{{ target_env }}_app_web_wls"
+  gather_facts: no
+  vars:
+    env_file: "{{ iweboas_env_file }}"
+  roles:
+    - weblogic
+  tags: weblogic
+
+# =========================================
+# STOP APP TIER - appl (as applusr user)
+# =========================================
+- name: Stop App Tier
+  hosts: "{{ target_env }}_app_web_appl"
+  gather_facts: no
+  vars:
+    env_file: "{{ applusr_env_file }}"
+  roles:
+    - applusr
+  tags: applusr
+
+# =========================================
+# STOP ADMIN SERVER (as applusr on admin node)
+# =========================================
+- name: Stop Admin Server
+  hosts: "{{ target_env }}_app_admin"
+  gather_facts: no
+  vars:
+    env_file: "{{ applusr_env_file }}"
+  roles:
+    - applusr
+  tags: applusr
+
+# =========================================
+# STOP DATABASE
+# =========================================
+- name: Stop DB
+  hosts: "{{ target_env }}_db"
+  gather_facts: no
+  roles:
+    - db

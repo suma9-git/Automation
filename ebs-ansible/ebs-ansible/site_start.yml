@@ -1,0 +1,39 @@
+- name: Start DB
+  hosts: "{{ target_env }}_db"
+  serial: 1
+  gather_facts: no
+  vars:
+    action: start
+  roles:
+    - db
+  tags: db
+
+- name: Start Admin Server
+  hosts: "{{ target_env }}_app_admin"
+  gather_facts: no
+  vars:
+    env_file: "{{ applusr_env_file }}"
+    action: start
+  roles:
+    - applusr
+  tags: applusr
+
+- name: Start App Tier
+  hosts: "{{ target_env }}_app_web_appl"
+  gather_facts: no
+  vars:
+    env_file: "{{ applusr_env_file }}"
+    action: start
+  roles:
+    - applusr
+  tags: applusr
+
+- name: Start WebLogic
+  hosts: "{{ target_env }}_app_web_wls"
+  gather_facts: no
+  vars:
+    env_file: "{{ iweboas_env_file }}"
+    action: start
+  roles:
+    - weblogic
+  tags: weblogic

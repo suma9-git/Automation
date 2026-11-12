@@ -1,0 +1,6 @@
+env_name: INT
+
+applusr_env_file: /u01/app/applusr/DBA_TOOL/env/INT.env 
+webusr_env_file: /u01/app/webusr/DBA_TOOL/env/INT14C.env
+db_env_file: /u01/app/oracle/DBA_TOOL/env/CINT.env
+

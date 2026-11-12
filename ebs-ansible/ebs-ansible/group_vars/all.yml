@@ -1,0 +1,21 @@
+# Default action
+action: stop
+
+# App scripts - full paths
+app_stop_script: /u01/app/applusr/r12stop.sh
+app_start_script: /u01/app/applusr/r12start.sh
+admin_stop_script: /u01/app/applusr/admin_stop.sh
+admin_start_script: /u01/app/applusr/admin_start.sh
+weblogic_stop_script: /u01/app/webusr/stopfmw14c.sh
+weblogic_start_script: /u01/app/webusr/startfmw14c.sh
+
+# DB scripts
+db_stop_script: /u01/app/oracle/DBA_TOOL/scripts/db_stop.sh
+db_start_script: /u01/app/oracle/DBA_TOOL/scripts/db_start.sh
+
+# RAC
+is_rac: false
+rac_stop_cmd: "sudo /u02/app/19c/grid/bin/crsctl stop crs"
+rac_start_cmd: "sudo /u02/app/19c/grid/bin/crsctl start crs"
+has_stop_cmd: "sudo /u02/app/19c/grid/bin/crsctl stop has"
+has_start_cmd: "sudo /u02/app/19c/grid/bin/crsctl start has"
